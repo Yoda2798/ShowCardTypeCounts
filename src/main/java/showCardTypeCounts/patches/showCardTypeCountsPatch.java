@@ -11,6 +11,7 @@ import com.megacrit.cardcrawl.helpers.FontHelper;
 import com.megacrit.cardcrawl.localization.UIStrings;
 import com.megacrit.cardcrawl.screens.CardRewardScreen;
 import javassist.CtBehavior;
+import showCardTypeCounts.ShowCardTypeCounts;
 
 @SpirePatch2(
         clz = CardRewardScreen.class,
@@ -65,7 +66,7 @@ public class showCardTypeCountsPatch {
             }
         }
 
-        if (outString.length() > 0) {
+        if (outString.length() > 0 && ShowCardTypeCounts.enableOnCardRewards) {
             FontHelper.renderFontLeft(sb, FontHelper.panelNameFont, deckName+"\n"+outString, 0f, Settings.HEIGHT / 2.0F, Color.WHITE.cpy());
         }
     }
