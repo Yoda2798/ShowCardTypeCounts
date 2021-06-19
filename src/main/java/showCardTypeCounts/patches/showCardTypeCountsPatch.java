@@ -66,7 +66,7 @@ public class showCardTypeCountsPatch {
             }
         }
 
-        if (outString.length() > 0 && ShowCardTypeCounts.enableOnCardRewards) {
+        if (outString.length() > 0 && ShowCardTypeCounts.showCardTypeCountsConfig.getBool(ShowCardTypeCounts.ENABLE_ON_CARD_REWARDS_SETTING)) {
             FontHelper.renderFontLeft(sb, FontHelper.panelNameFont, deckName+"\n"+outString, 0f, Settings.HEIGHT / 2.0F, Color.WHITE.cpy());
         }
     }

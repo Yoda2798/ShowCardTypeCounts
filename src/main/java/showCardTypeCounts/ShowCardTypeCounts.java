@@ -22,6 +22,7 @@ public class ShowCardTypeCounts implements PostInitializeSubscriber /*implements
     public static final String modID = "showcardtypecounts";
 
     public static Properties showCardTypeCountsSettings = new Properties();
+    public static SpireConfig showCardTypeCountsConfig;
     public static final String ENABLE_ON_CARD_REWARDS_SETTING = "enableOnCardRewards";
     public static boolean enableOnCardRewards = true; // The boolean we'll be setting on/off (true/false)
 
@@ -37,10 +38,10 @@ public class ShowCardTypeCounts implements PostInitializeSubscriber /*implements
         // The actual mod Button is added below in receivePostInitialize()
         showCardTypeCountsSettings.setProperty(ENABLE_ON_CARD_REWARDS_SETTING, "TRUE"); // This is the default setting. It's actually set...
         try {
-            SpireConfig config = new SpireConfig("showCardTypeCounts", "showCardTypeCountsConfig", showCardTypeCountsSettings); // ...right here
+            showCardTypeCountsConfig = new SpireConfig("showCardTypeCounts", "showCardTypeCountsConfig", showCardTypeCountsSettings); // ...right here
             // the "fileName" parameter is the name of the file MTS will create where it will save our setting.
-            config.load(); // Load the setting and set the boolean to equal it
-            enableOnCardRewards = config.getBool(ENABLE_ON_CARD_REWARDS_SETTING);
+            showCardTypeCountsConfig.load(); // Load the setting and set the boolean to equal it
+            enableOnCardRewards = showCardTypeCountsConfig.getBool(ENABLE_ON_CARD_REWARDS_SETTING);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -78,9 +79,9 @@ public class ShowCardTypeCounts implements PostInitializeSubscriber /*implements
                     enableOnCardRewards = button.enabled; // The boolean true/false will be whether the button is enabled or not
                     try {
                         // And based on that boolean, set the settings and save them
-                        SpireConfig config = new SpireConfig("showCardTypeCounts", "showCardTypeCountsConfig", showCardTypeCountsSettings);
-                        config.setBool(ENABLE_ON_CARD_REWARDS_SETTING, enableOnCardRewards);
-                        config.save();
+                        //SpireConfig config = new SpireConfig("showCardTypeCounts", "showCardTypeCountsConfig", showCardTypeCountsSettings);
+                        showCardTypeCountsConfig.setBool(ENABLE_ON_CARD_REWARDS_SETTING, enableOnCardRewards);
+                        showCardTypeCountsConfig.save();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
