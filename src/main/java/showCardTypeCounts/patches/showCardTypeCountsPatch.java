@@ -30,6 +30,7 @@ public class showCardTypeCountsPatch {
         int[] cardCounts = new int[5];
         String outString = "";
         //int totalCards = 0;
+        boolean countCurses = ShowCardTypeCounts.showCardTypeCountsConfig.getBool(ShowCardTypeCounts.ENABLE_CURSES_SETTING);
 
         for (AbstractCard c: AbstractDungeon.player.masterDeck.group) {
             switch (c.type) {
@@ -44,10 +45,14 @@ public class showCardTypeCountsPatch {
                     break;
                 case CURSE:
                     // TODO: add check for ignoring Ascender's Bane here
-                    cardCounts[3]++;
+                    if (countCurses) {
+                        cardCounts[3]++;
+                    }
                     break;
                 case STATUS:
-                    cardCounts[4]++;
+                    if (countCurses) {
+                        cardCounts[4]++;
+                    }
                     break;
                 default:
                     // ignore card if somehow not one of above
