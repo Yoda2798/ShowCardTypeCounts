@@ -24,7 +24,6 @@ public class ShowCardTypeCounts implements PostInitializeSubscriber /*implements
     public static Properties showCardTypeCountsSettings = new Properties();
     public static SpireConfig showCardTypeCountsConfig;
     public static final String ENABLE_ON_CARD_REWARDS_SETTING = "enableOnCardRewards";
-    public static boolean enableOnCardRewards = true; // The boolean we'll be setting on/off (true/false)
 
     public static final String BADGE_IMAGE = "showcardtypecountsResources/images/Badge.png";
 
@@ -41,7 +40,6 @@ public class ShowCardTypeCounts implements PostInitializeSubscriber /*implements
             showCardTypeCountsConfig = new SpireConfig("showCardTypeCounts", "showCardTypeCountsConfig", showCardTypeCountsSettings); // ...right here
             // the "fileName" parameter is the name of the file MTS will create where it will save our setting.
             showCardTypeCountsConfig.load(); // Load the setting and set the boolean to equal it
-            enableOnCardRewards = showCardTypeCountsConfig.getBool(ENABLE_ON_CARD_REWARDS_SETTING);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -61,26 +59,20 @@ public class ShowCardTypeCounts implements PostInitializeSubscriber /*implements
 
     @Override
     public void receivePostInitialize() {
-        // Load the Mod Badge
         Texture badgeTexture = TexLoader.getTexture(BADGE_IMAGE);
 
-        // Create the Mod Menu
         ModPanel settingsPanel = new ModPanel();
 
         // Create the on/off button:
         ModLabeledToggleButton enableNormalsButton = new ModLabeledToggleButton("Show on card reward screen.",
                 350.0f, 700.0f, Settings.CREAM_COLOR, FontHelper.charDescFont, // Position (trial and error it), color, font
-                enableOnCardRewards, // Boolean it uses
+                showCardTypeCountsConfig.getBool(ENABLE_ON_CARD_REWARDS_SETTING), // initial value
                 settingsPanel, // The mod panel in which this button will be in
                 (label) -> {
-                }, // thing??????? idk
+                },
                 (button) -> { // The actual button:
-
-                    enableOnCardRewards = button.enabled; // The boolean true/false will be whether the button is enabled or not
                     try {
-                        // And based on that boolean, set the settings and save them
-                        //SpireConfig config = new SpireConfig("showCardTypeCounts", "showCardTypeCountsConfig", showCardTypeCountsSettings);
-                        showCardTypeCountsConfig.setBool(ENABLE_ON_CARD_REWARDS_SETTING, enableOnCardRewards);
+                        showCardTypeCountsConfig.setBool(ENABLE_ON_CARD_REWARDS_SETTING, button.enabled);
                         showCardTypeCountsConfig.save();
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -91,9 +83,4 @@ public class ShowCardTypeCounts implements PostInitializeSubscriber /*implements
 
         BaseMod.registerModBadge(badgeTexture, "showCardTypeCounts", "Yoda2798", "Adds counts and percentages for different card types in deck.e", settingsPanel);
     }
-
-    /*@Override
-    public void receiveEditStrings() {
-        BaseMod.loadCustomStringsFile(UIStrings.class, modID + "Resources/localization/eng/Cardstrings.json");
-    }*/
 }
