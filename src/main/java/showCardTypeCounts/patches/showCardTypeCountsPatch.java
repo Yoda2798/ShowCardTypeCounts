@@ -27,29 +27,34 @@ public class showCardTypeCountsPatch {
     public static void countCardTypes(SpriteBatch sb) {
         int[] cardCounts = new int[5];
         String outString = "";
-        //int totalCards = 0;
+        int deckSize = 0;
         boolean countCurses = ShowCardTypeCounts.showCardTypeCountsConfig.getBool(ShowCardTypeCounts.ENABLE_CURSES_SETTING);
 
         for (AbstractCard c: AbstractDungeon.player.masterDeck.group) {
             switch (c.type) {
                 case ATTACK:
                     cardCounts[0]++;
+                    deckSize++;
                     break;
                 case SKILL:
                     cardCounts[1]++;
+                    deckSize++;
                     break;
                 case POWER:
                     cardCounts[2]++;
+                    deckSize++;
                     break;
                 case CURSE:
                     // TODO: add check for ignoring Ascender's Bane here
                     if (countCurses) {
                         cardCounts[3]++;
+                        deckSize++;
                     }
                     break;
                 case STATUS:
                     if (countCurses) {
                         cardCounts[4]++;
+                        deckSize++;
                     }
                     break;
                 default:
@@ -61,10 +66,8 @@ public class showCardTypeCountsPatch {
 
         for (int i = 0; i < cardCounts.length; i++) {
             if (cardCounts[i] > 0) {
-                //String newLine = outString.length() > 0 ? "\n" : "";
                 String cardType = i == 4 ? uiStrings.TEXT[7] : uiStrings.TEXT[i];
-                int percentage = Math.round(cardCounts[i] * 100 / AbstractDungeon.player.masterDeck.group.size());
-                //outString += uiStrings.TEXT[i] + cardCounts[i];
+                int percentage = Math.round( (float) cardCounts[i] * 100 / deckSize);
                 outString += String.format("%1$s: %2$d (%3$d%%)\n", cardType, cardCounts[i], percentage);
             }
         }
