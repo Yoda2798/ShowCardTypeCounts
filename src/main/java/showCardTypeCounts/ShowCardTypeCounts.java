@@ -175,6 +175,6 @@ public class ShowCardTypeCounts implements PostInitializeSubscriber /*implements
                 });
         settingsPanel.addUIElement(enablePercentagesButton); // Add the button to the settings panel. Button is a go.
 
-        BaseMod.registerModBadge(badgeTexture, "showCardTypeCounts", "Yoda2798", "Adds counts and percentages for different card types in deck.e", settingsPanel);
+        BaseMod.registerModBadge(badgeTexture, "showCardTypeCounts", "Yoda2798", "${project.description}", settingsPanel);
     }
 }
