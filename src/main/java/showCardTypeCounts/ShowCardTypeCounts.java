@@ -9,15 +9,13 @@ import com.evacipated.cardcrawl.modthespire.lib.SpireConfig;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.helpers.FontHelper;
-import com.megacrit.cardcrawl.localization.UIStrings;
 import showCardTypeCounts.util.TexLoader;
 
-import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
 @SuppressWarnings({"unused", "WeakerAccess"})
 @SpireInitializer
-public class ShowCardTypeCounts implements PostInitializeSubscriber /*implements EditStringsSubscriber*/ {
+public class ShowCardTypeCounts implements PostInitializeSubscriber {
 
     public static final String modID = "showcardtypecounts";
 
@@ -30,6 +28,7 @@ public class ShowCardTypeCounts implements PostInitializeSubscriber /*implements
     public static final String ENABLE_ASCENDERS_BANE_SETTING = "enableAscendersBane";
     public static final String ENABLE_PERCENTAGES_SETTING = "enablePercentages";
     public static final String ENABLE_CAPITALISE_DECK_SETTING = "enableCapitaliseDeck";
+    public static final String ENABLE_SHOW_ON_RIGHT_SETTING = "enableShowOnRight";
 
     public static final String BADGE_IMAGE = "showcardtypecountsResources/images/Badge.png";
 
@@ -43,19 +42,19 @@ public class ShowCardTypeCounts implements PostInitializeSubscriber /*implements
 
     public ShowCardTypeCounts() {
         BaseMod.subscribe(this);
-        // This loads the mod settings.
-        // The actual mod Button is added below in receivePostInitialize()
-        showCardTypeCountsSettings.setProperty(ENABLE_ON_CARD_REWARDS_SETTING, "TRUE"); // This is the default setting. It's actually set...
-        showCardTypeCountsSettings.setProperty(ENABLE_ON_VIEW_DECK_SETTING, "TRUE"); // This is the default setting. It's actually set...
-        showCardTypeCountsSettings.setProperty(ENABLE_ON_SHOP_SETTING, "FALSE"); // This is the default setting. It's actually set...
-        showCardTypeCountsSettings.setProperty(ENABLE_CURSES_SETTING, "TRUE"); // This is the default setting. It's actually set...
-        showCardTypeCountsSettings.setProperty(ENABLE_ASCENDERS_BANE_SETTING, "TRUE"); // This is the default setting. It's actually set...
-        showCardTypeCountsSettings.setProperty(ENABLE_PERCENTAGES_SETTING, "TRUE"); // This is the default setting. It's actually set...
-        showCardTypeCountsSettings.setProperty(ENABLE_CAPITALISE_DECK_SETTING, "TRUE"); // This is the default setting. It's actually set...
+
+        showCardTypeCountsSettings.setProperty(ENABLE_ON_CARD_REWARDS_SETTING, "TRUE");
+        showCardTypeCountsSettings.setProperty(ENABLE_ON_VIEW_DECK_SETTING, "TRUE");
+        showCardTypeCountsSettings.setProperty(ENABLE_ON_SHOP_SETTING, "FALSE");
+        showCardTypeCountsSettings.setProperty(ENABLE_CURSES_SETTING, "TRUE");
+        showCardTypeCountsSettings.setProperty(ENABLE_ASCENDERS_BANE_SETTING, "TRUE");
+        showCardTypeCountsSettings.setProperty(ENABLE_PERCENTAGES_SETTING, "TRUE");
+        showCardTypeCountsSettings.setProperty(ENABLE_CAPITALISE_DECK_SETTING, "TRUE");
+        showCardTypeCountsSettings.setProperty(ENABLE_SHOW_ON_RIGHT_SETTING, "FALSE");
+
         try {
-            showCardTypeCountsConfig = new SpireConfig("showCardTypeCounts", "showCardTypeCountsConfig", showCardTypeCountsSettings); // ...right here
-            // the "fileName" parameter is the name of the file MTS will create where it will save our setting.
-            showCardTypeCountsConfig.load(); // Load the setting and set the boolean to equal it
+            showCardTypeCountsConfig = new SpireConfig("showCardTypeCounts", "showCardTypeCountsConfig", showCardTypeCountsSettings);
+            showCardTypeCountsConfig.load();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -103,6 +102,7 @@ public class ShowCardTypeCounts implements PostInitializeSubscriber /*implements
         makeToggleButton(settingsPanel, ENABLE_ASCENDERS_BANE_SETTING, "Ignore Ascender's Bane.");
         makeToggleButton(settingsPanel, ENABLE_PERCENTAGES_SETTING, "Show percentages of card types.");
         makeToggleButton(settingsPanel, ENABLE_CAPITALISE_DECK_SETTING, "Capitalise 'DECK'.");
+        makeToggleButton(settingsPanel, ENABLE_SHOW_ON_RIGHT_SETTING, "Show information on right-hand side of screen.");
 
         BaseMod.registerModBadge(badgeTexture, "showCardTypeCounts", "Yoda2798", "${project.description}", settingsPanel);
     }

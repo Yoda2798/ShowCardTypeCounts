@@ -33,7 +33,9 @@ public class showCardTypeCountsPatch {
         boolean ignoreAscendersBane = ShowCardTypeCounts.showCardTypeCountsConfig.getBool(ShowCardTypeCounts.ENABLE_ASCENDERS_BANE_SETTING);
         boolean showPercentages = ShowCardTypeCounts.showCardTypeCountsConfig.getBool(ShowCardTypeCounts.ENABLE_PERCENTAGES_SETTING);
         boolean capitaliseDeck = ShowCardTypeCounts.showCardTypeCountsConfig.getBool(ShowCardTypeCounts.ENABLE_CAPITALISE_DECK_SETTING);
+        boolean showOnRight = ShowCardTypeCounts.showCardTypeCountsConfig.getBool(ShowCardTypeCounts.ENABLE_SHOW_ON_RIGHT_SETTING);
 
+        // count cards of each type in deck
         for (AbstractCard c: AbstractDungeon.player.masterDeck.group) {
             switch (c.type) {
                 case ATTACK:
@@ -66,21 +68,28 @@ public class showCardTypeCountsPatch {
             }
         }
 
-
+        // format output for each card type
         for (int i = 0; i < cardCounts.length; i++) {
             if (cardCounts[i] > 0) {
-                String cardType = i == 4 ? uiStrings.TEXT[7] : uiStrings.TEXT[i];
+                String cardType = i == 4 ? uiStrings.TEXT[7] : uiStrings.TEXT[i]; // Status is in different spot
                 int percentageNum = Math.round( (float) cardCounts[i] * 100 / deckSize);
                 String percentage = showPercentages ? String.format(" (%d%%)", percentageNum) : "";
                 outString = outString.concat(String.format("%1$s: %2$d%3$s\n", cardType, cardCounts[i], percentage));
             }
         }
 
+        // add preceding 'Deck' if non-empty output
         if (outString.length() > 0) {
             String deckName = capitaliseDeck ? tutorialStrings.LABEL[1].toUpperCase().concat("\n") : tutorialStrings.LABEL[1].concat("\n");
             outString = deckName.concat(outString);
         }
-        FontHelper.renderFontLeft(sb, FontHelper.panelNameFont, outString, 16f * Settings.scale, Settings.HEIGHT / 2.0F, Color.WHITE.cpy());
+
+        // render output, on correct side
+        if (showOnRight) {
+            FontHelper.renderFontRightAligned(sb, FontHelper.panelNameFont, outString, Settings.WIDTH - 16f * Settings.scale, Settings.HEIGHT / 2.0F, Color.WHITE.cpy());
+        } else {
+            FontHelper.renderFontLeft(sb, FontHelper.panelNameFont, outString, 16f * Settings.scale, Settings.HEIGHT / 2.0F, Color.WHITE.cpy());
+        }
     }
 
     @SpirePatch2(
