@@ -30,7 +30,7 @@ public class showCardTypeCountsPatch {
         String outString = "";
         int deckSize = 0;
         boolean countCurses = ShowCardTypeCounts.showCardTypeCountsConfig.getBool(ShowCardTypeCounts.ENABLE_CURSES_SETTING);
-        boolean ignoreAscendersBane = ShowCardTypeCounts.showCardTypeCountsConfig.getBool(ShowCardTypeCounts.ENABLE_ASCENDERS_BANE_SETTING);
+        boolean countAscendersBane = ShowCardTypeCounts.showCardTypeCountsConfig.getBool(ShowCardTypeCounts.ENABLE_ASCENDERS_BANE_SETTING);
         boolean showPercentages = ShowCardTypeCounts.showCardTypeCountsConfig.getBool(ShowCardTypeCounts.ENABLE_PERCENTAGES_SETTING);
         boolean capitaliseDeck = ShowCardTypeCounts.showCardTypeCountsConfig.getBool(ShowCardTypeCounts.ENABLE_CAPITALISE_DECK_SETTING);
         boolean showOnRight = ShowCardTypeCounts.showCardTypeCountsConfig.getBool(ShowCardTypeCounts.ENABLE_SHOW_ON_RIGHT_SETTING);
@@ -51,7 +51,7 @@ public class showCardTypeCountsPatch {
                     deckSize++;
                     break;
                 case CURSE:
-                    if (countCurses && !(c.cardID.equals("AscendersBane") && ignoreAscendersBane)) {
+                    if (countCurses && !(c.cardID.equals("AscendersBane") && !countAscendersBane)) {
                         cardCounts[3]++;
                         deckSize++;
                     }
@@ -84,7 +84,7 @@ public class showCardTypeCountsPatch {
             outString = deckName.concat(outString);
         }
 
-        // render output, on correct side
+        // render output, on correct side of screen
         if (showOnRight) {
             FontHelper.renderFontRightAligned(sb, FontHelper.panelNameFont, outString, Settings.WIDTH - 16f * Settings.scale, Settings.HEIGHT / 2.0F, Color.WHITE.cpy());
         } else {
@@ -123,7 +123,7 @@ public class showCardTypeCountsPatch {
     public static class deckViewScreenPatch {
         @SpirePostfixPatch
         public static void Postfix(SpriteBatch sb) {
-            if (ShowCardTypeCounts.showCardTypeCountsConfig.getBool(ShowCardTypeCounts.ENABLE_ON_CARD_REWARDS_SETTING)) {
+            if (ShowCardTypeCounts.showCardTypeCountsConfig.getBool(ShowCardTypeCounts.ENABLE_ON_VIEW_DECK_SETTING)) {
                 countCardTypes(sb);
             }
         }

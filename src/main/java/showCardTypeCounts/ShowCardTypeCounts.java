@@ -19,7 +19,7 @@ public class ShowCardTypeCounts implements PostInitializeSubscriber {
 
     public static final String modID = "showcardtypecounts";
 
-    public static Properties showCardTypeCountsSettings = new Properties();
+    public static Properties defaultSettings = new Properties();
     public static SpireConfig showCardTypeCountsConfig;
     public static final String ENABLE_ON_CARD_REWARDS_SETTING = "enableOnCardRewards";
     public static final String ENABLE_ON_VIEW_DECK_SETTING = "enableOnViewDeck";
@@ -30,38 +30,30 @@ public class ShowCardTypeCounts implements PostInitializeSubscriber {
     public static final String ENABLE_CAPITALISE_DECK_SETTING = "enableCapitaliseDeck";
     public static final String ENABLE_SHOW_ON_RIGHT_SETTING = "enableShowOnRight";
 
-    public static final String BADGE_IMAGE = "showcardtypecountsResources/images/Badge.png";
+    public static final String BADGE_IMAGE = makeImagePath("Badge.png");
 
     private static final float xPos = 350;
     private static float yPos = 750;
     private static final float yJump = 50;
 
-    public static String makeID(String idText) {
-        return modID + ":" + idText;
-    }
-
     public ShowCardTypeCounts() {
         BaseMod.subscribe(this);
 
-        showCardTypeCountsSettings.setProperty(ENABLE_ON_CARD_REWARDS_SETTING, "TRUE");
-        showCardTypeCountsSettings.setProperty(ENABLE_ON_VIEW_DECK_SETTING, "TRUE");
-        showCardTypeCountsSettings.setProperty(ENABLE_ON_SHOP_SETTING, "FALSE");
-        showCardTypeCountsSettings.setProperty(ENABLE_CURSES_SETTING, "TRUE");
-        showCardTypeCountsSettings.setProperty(ENABLE_ASCENDERS_BANE_SETTING, "TRUE");
-        showCardTypeCountsSettings.setProperty(ENABLE_PERCENTAGES_SETTING, "TRUE");
-        showCardTypeCountsSettings.setProperty(ENABLE_CAPITALISE_DECK_SETTING, "TRUE");
-        showCardTypeCountsSettings.setProperty(ENABLE_SHOW_ON_RIGHT_SETTING, "FALSE");
+        defaultSettings.setProperty(ENABLE_ON_CARD_REWARDS_SETTING, "TRUE");
+        defaultSettings.setProperty(ENABLE_ON_VIEW_DECK_SETTING, "TRUE");
+        defaultSettings.setProperty(ENABLE_ON_SHOP_SETTING, "TRUE");
+        defaultSettings.setProperty(ENABLE_CURSES_SETTING, "TRUE");
+        defaultSettings.setProperty(ENABLE_ASCENDERS_BANE_SETTING, "FALSE");
+        defaultSettings.setProperty(ENABLE_PERCENTAGES_SETTING, "TRUE");
+        defaultSettings.setProperty(ENABLE_CAPITALISE_DECK_SETTING, "TRUE");
+        defaultSettings.setProperty(ENABLE_SHOW_ON_RIGHT_SETTING, "FALSE");
 
         try {
-            showCardTypeCountsConfig = new SpireConfig("showCardTypeCounts", "showCardTypeCountsConfig", showCardTypeCountsSettings);
+            showCardTypeCountsConfig = new SpireConfig("showCardTypeCounts", "showCardTypeCountsConfig", defaultSettings);
             showCardTypeCountsConfig.load();
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public static String makePath(String resourcePath) {
-        return modID + "Resources/" + resourcePath;
     }
 
     public static String makeImagePath(String resourcePath) {
@@ -99,9 +91,9 @@ public class ShowCardTypeCounts implements PostInitializeSubscriber {
         makeToggleButton(settingsPanel, ENABLE_ON_VIEW_DECK_SETTING, "Show on view deck screen.");
         makeToggleButton(settingsPanel, ENABLE_ON_SHOP_SETTING, "Show on shop screen.");
         makeToggleButton(settingsPanel, ENABLE_CURSES_SETTING, "Count Curse and Status cards.");
-        makeToggleButton(settingsPanel, ENABLE_ASCENDERS_BANE_SETTING, "Ignore Ascender's Bane.");
+        makeToggleButton(settingsPanel, ENABLE_ASCENDERS_BANE_SETTING, "Count Ascender's Bane.");
         makeToggleButton(settingsPanel, ENABLE_PERCENTAGES_SETTING, "Show percentages of card types.");
-        makeToggleButton(settingsPanel, ENABLE_CAPITALISE_DECK_SETTING, "Capitalise 'DECK'.");
+        makeToggleButton(settingsPanel, ENABLE_CAPITALISE_DECK_SETTING, "Show 'DECK' in all capitals.");
         makeToggleButton(settingsPanel, ENABLE_SHOW_ON_RIGHT_SETTING, "Show information on right-hand side of screen.");
 
         BaseMod.registerModBadge(badgeTexture, "showCardTypeCounts", "Yoda2798", "${project.description}", settingsPanel);
