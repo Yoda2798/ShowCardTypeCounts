@@ -27,6 +27,7 @@ public class ShowCardTypeCounts implements PostInitializeSubscriber /*implements
     public static final String ENABLE_ON_VIEW_DECK_SETTING = "enableOnViewDeck";
     public static final String ENABLE_CURSES_SETTING = "enableCurses";
     public static final String ENABLE_ASCENDERS_BANE_SETTING = "enableAscendersBane";
+    public static final String ENABLE_PERCENTAGES_SETTING = "enablePercentages";
 
     public static final String BADGE_IMAGE = "showcardtypecountsResources/images/Badge.png";
 
@@ -42,6 +43,7 @@ public class ShowCardTypeCounts implements PostInitializeSubscriber /*implements
         showCardTypeCountsSettings.setProperty(ENABLE_ON_VIEW_DECK_SETTING, "TRUE"); // This is the default setting. It's actually set...
         showCardTypeCountsSettings.setProperty(ENABLE_CURSES_SETTING, "TRUE"); // This is the default setting. It's actually set...
         showCardTypeCountsSettings.setProperty(ENABLE_ASCENDERS_BANE_SETTING, "FALSE"); // This is the default setting. It's actually set...
+        showCardTypeCountsSettings.setProperty(ENABLE_PERCENTAGES_SETTING, "TRUE"); // This is the default setting. It's actually set...
         try {
             showCardTypeCountsConfig = new SpireConfig("showCardTypeCounts", "showCardTypeCountsConfig", showCardTypeCountsSettings); // ...right here
             // the "fileName" parameter is the name of the file MTS will create where it will save our setting.
@@ -136,6 +138,23 @@ public class ShowCardTypeCounts implements PostInitializeSubscriber /*implements
                     }
                 });
         settingsPanel.addUIElement(enableAscendersBaneButton); // Add the button to the settings panel. Button is a go.
+
+        // Create the on/off button:
+        ModLabeledToggleButton enablePercentagesButton = new ModLabeledToggleButton("Show percentages of card types.",
+                350.0f, 550.0f, Settings.CREAM_COLOR, FontHelper.charDescFont, // Position (trial and error it), color, font
+                showCardTypeCountsConfig.getBool(ENABLE_PERCENTAGES_SETTING), // initial value
+                settingsPanel, // The mod panel in which this button will be in
+                (label) -> {
+                },
+                (button) -> { // The actual button:
+                    try {
+                        showCardTypeCountsConfig.setBool(ENABLE_PERCENTAGES_SETTING, button.enabled);
+                        showCardTypeCountsConfig.save();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+        settingsPanel.addUIElement(enablePercentagesButton); // Add the button to the settings panel. Button is a go.
 
         BaseMod.registerModBadge(badgeTexture, "showCardTypeCounts", "Yoda2798", "Adds counts and percentages for different card types in deck.e", settingsPanel);
     }

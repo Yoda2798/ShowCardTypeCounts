@@ -30,6 +30,7 @@ public class showCardTypeCountsPatch {
         int deckSize = 0;
         boolean countCurses = ShowCardTypeCounts.showCardTypeCountsConfig.getBool(ShowCardTypeCounts.ENABLE_CURSES_SETTING);
         boolean ignoreAscendersBane = ShowCardTypeCounts.showCardTypeCountsConfig.getBool(ShowCardTypeCounts.ENABLE_ASCENDERS_BANE_SETTING);
+        boolean showPercentages = ShowCardTypeCounts.showCardTypeCountsConfig.getBool(ShowCardTypeCounts.ENABLE_PERCENTAGES_SETTING);
 
         for (AbstractCard c: AbstractDungeon.player.masterDeck.group) {
             switch (c.type) {
@@ -67,8 +68,9 @@ public class showCardTypeCountsPatch {
         for (int i = 0; i < cardCounts.length; i++) {
             if (cardCounts[i] > 0) {
                 String cardType = i == 4 ? uiStrings.TEXT[7] : uiStrings.TEXT[i];
-                int percentage = Math.round( (float) cardCounts[i] * 100 / deckSize);
-                outString = outString.concat(String.format("%1$s: %2$d (%3$d%%)\n", cardType, cardCounts[i], percentage));
+                int percentageNum = Math.round( (float) cardCounts[i] * 100 / deckSize);
+                String percentage = showPercentages ? String.format(" (%d%%)", percentageNum) : "";
+                outString = outString.concat(String.format("%1$s: %2$d%3$s\n", cardType, cardCounts[i], percentage));
             }
         }
 
