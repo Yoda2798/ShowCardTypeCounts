@@ -33,6 +33,10 @@ public class ShowCardTypeCounts implements PostInitializeSubscriber /*implements
 
     public static final String BADGE_IMAGE = "showcardtypecountsResources/images/Badge.png";
 
+    private static final float xPos = 350;
+    private static float yPos = 750;
+    private static final float yJump = 50;
+
     public static String makeID(String idText) {
         return modID + ":" + idText;
     }
@@ -65,6 +69,23 @@ public class ShowCardTypeCounts implements PostInitializeSubscriber /*implements
         return modID + "Resources/images/" + resourcePath;
     }
 
+    private static void makeToggleButton(ModPanel settingsPanel, String setting, String labelText) {
+        settingsPanel.addUIElement(new ModLabeledToggleButton(labelText, xPos, yPos, Settings.CREAM_COLOR, FontHelper.charDescFont, // Position (trial and error it), color, font
+                showCardTypeCountsConfig.getBool(setting), // initial value
+                settingsPanel, // The mod panel in which this button will be in
+                (label) -> {
+                },
+                (button) -> { // The actual button:
+                    try {
+                        showCardTypeCountsConfig.setBool(setting, button.enabled);
+                        showCardTypeCountsConfig.save();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }));
+        yPos -= yJump;
+    }
+
     public static void initialize() {
         ShowCardTypeCounts thismod = new ShowCardTypeCounts();
     }
@@ -75,124 +96,13 @@ public class ShowCardTypeCounts implements PostInitializeSubscriber /*implements
 
         ModPanel settingsPanel = new ModPanel();
 
-        // Create the on/off button:
-        ModLabeledToggleButton enableCardRewardButton = new ModLabeledToggleButton("Show on card reward screen.",
-                350.0f, 750.0f, Settings.CREAM_COLOR, FontHelper.charDescFont, // Position (trial and error it), color, font
-                showCardTypeCountsConfig.getBool(ENABLE_ON_CARD_REWARDS_SETTING), // initial value
-                settingsPanel, // The mod panel in which this button will be in
-                (label) -> {
-                },
-                (button) -> { // The actual button:
-                    try {
-                        showCardTypeCountsConfig.setBool(ENABLE_ON_CARD_REWARDS_SETTING, button.enabled);
-                        showCardTypeCountsConfig.save();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                });
-        settingsPanel.addUIElement(enableCardRewardButton); // Add the button to the settings panel. Button is a go.
-
-        // Create the on/off button:
-        ModLabeledToggleButton enableViewDeckButton = new ModLabeledToggleButton("Show on view deck screen.",
-                350.0f, 700.0f, Settings.CREAM_COLOR, FontHelper.charDescFont, // Position (trial and error it), color, font
-                showCardTypeCountsConfig.getBool(ENABLE_ON_VIEW_DECK_SETTING), // initial value
-                settingsPanel, // The mod panel in which this button will be in
-                (label) -> {
-                },
-                (button) -> { // The actual button:
-                    try {
-                        showCardTypeCountsConfig.setBool(ENABLE_ON_VIEW_DECK_SETTING, button.enabled);
-                        showCardTypeCountsConfig.save();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                });
-        settingsPanel.addUIElement(enableViewDeckButton); // Add the button to the settings panel. Button is a go.
-
-        // Create the on/off button:
-        ModLabeledToggleButton enableShopButton = new ModLabeledToggleButton("Show on shop screen.",
-                350.0f, 650.0f, Settings.CREAM_COLOR, FontHelper.charDescFont, // Position (trial and error it), color, font
-                showCardTypeCountsConfig.getBool(ENABLE_ON_SHOP_SETTING), // initial value
-                settingsPanel, // The mod panel in which this button will be in
-                (label) -> {
-                },
-                (button) -> { // The actual button:
-                    try {
-                        showCardTypeCountsConfig.setBool(ENABLE_ON_SHOP_SETTING, button.enabled);
-                        showCardTypeCountsConfig.save();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                });
-        settingsPanel.addUIElement(enableShopButton); // Add the button to the settings panel. Button is a go.
-
-        // Create the on/off button:
-        ModLabeledToggleButton enableCursesButton = new ModLabeledToggleButton("Count Curse and Status cards.",
-                350.0f, 600.0f, Settings.CREAM_COLOR, FontHelper.charDescFont, // Position (trial and error it), color, font
-                showCardTypeCountsConfig.getBool(ENABLE_CURSES_SETTING), // initial value
-                settingsPanel, // The mod panel in which this button will be in
-                (label) -> {
-                },
-                (button) -> { // The actual button:
-                    try {
-                        showCardTypeCountsConfig.setBool(ENABLE_CURSES_SETTING, button.enabled);
-                        showCardTypeCountsConfig.save();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                });
-        settingsPanel.addUIElement(enableCursesButton); // Add the button to the settings panel. Button is a go.
-
-        // Create the on/off button:
-        ModLabeledToggleButton enableAscendersBaneButton = new ModLabeledToggleButton("Ignore Ascender's Bane.",
-                350.0f, 550.0f, Settings.CREAM_COLOR, FontHelper.charDescFont, // Position (trial and error it), color, font
-                showCardTypeCountsConfig.getBool(ENABLE_ASCENDERS_BANE_SETTING), // initial value
-                settingsPanel, // The mod panel in which this button will be in
-                (label) -> {
-                },
-                (button) -> { // The actual button:
-                    try {
-                        showCardTypeCountsConfig.setBool(ENABLE_ASCENDERS_BANE_SETTING, button.enabled);
-                        showCardTypeCountsConfig.save();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                });
-        settingsPanel.addUIElement(enableAscendersBaneButton); // Add the button to the settings panel. Button is a go.
-
-        // Create the on/off button:
-        ModLabeledToggleButton enablePercentagesButton = new ModLabeledToggleButton("Show percentages of card types.",
-                350.0f, 500.0f, Settings.CREAM_COLOR, FontHelper.charDescFont, // Position (trial and error it), color, font
-                showCardTypeCountsConfig.getBool(ENABLE_PERCENTAGES_SETTING), // initial value
-                settingsPanel, // The mod panel in which this button will be in
-                (label) -> {
-                },
-                (button) -> { // The actual button:
-                    try {
-                        showCardTypeCountsConfig.setBool(ENABLE_PERCENTAGES_SETTING, button.enabled);
-                        showCardTypeCountsConfig.save();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                });
-        settingsPanel.addUIElement(enablePercentagesButton); // Add the button to the settings panel. Button is a go.
-
-        // Create the on/off button:
-        ModLabeledToggleButton enableCapitaliseButton = new ModLabeledToggleButton("Capitalise \"DECK\".",
-                350.0f, 450.0f, Settings.CREAM_COLOR, FontHelper.charDescFont, // Position (trial and error it), color, font
-                showCardTypeCountsConfig.getBool(ENABLE_CAPITALISE_DECK_SETTING), // initial value
-                settingsPanel, // The mod panel in which this button will be in
-                (label) -> {
-                },
-                (button) -> { // The actual button:
-                    try {
-                        showCardTypeCountsConfig.setBool(ENABLE_CAPITALISE_DECK_SETTING, button.enabled);
-                        showCardTypeCountsConfig.save();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                });
-        settingsPanel.addUIElement(enableCapitaliseButton); // Add the button to the settings panel. Button is a go.
+        makeToggleButton(settingsPanel, ENABLE_ON_CARD_REWARDS_SETTING, "Show on card reward screen.");
+        makeToggleButton(settingsPanel, ENABLE_ON_VIEW_DECK_SETTING, "Show on view deck screen.");
+        makeToggleButton(settingsPanel, ENABLE_ON_SHOP_SETTING, "Show on shop screen.");
+        makeToggleButton(settingsPanel, ENABLE_CURSES_SETTING, "Count Curse and Status cards.");
+        makeToggleButton(settingsPanel, ENABLE_ASCENDERS_BANE_SETTING, "Ignore Ascender's Bane.");
+        makeToggleButton(settingsPanel, ENABLE_PERCENTAGES_SETTING, "Show percentages of card types.");
+        makeToggleButton(settingsPanel, ENABLE_CAPITALISE_DECK_SETTING, "Capitalise 'DECK'.");
 
         BaseMod.registerModBadge(badgeTexture, "showCardTypeCounts", "Yoda2798", "${project.description}", settingsPanel);
     }
