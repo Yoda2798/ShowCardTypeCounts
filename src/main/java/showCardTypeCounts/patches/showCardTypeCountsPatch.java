@@ -79,7 +79,7 @@ public class showCardTypeCountsPatch {
             String deckName = tutorialStrings.LABEL[1]+"\n";
             outString = deckName+outString;
         }
-        FontHelper.renderFontLeft(sb, FontHelper.panelNameFont, outString, 0f, Settings.HEIGHT / 2.0F, Color.WHITE.cpy());
+        FontHelper.renderFontLeft(sb, FontHelper.panelNameFont, outString, 16f * Settings.scale, Settings.HEIGHT / 2.0F, Color.WHITE.cpy());
     }
 
     @SpirePatch2(
