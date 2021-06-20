@@ -68,7 +68,7 @@ public class showCardTypeCountsPatch {
             if (cardCounts[i] > 0) {
                 String cardType = i == 4 ? uiStrings.TEXT[7] : uiStrings.TEXT[i];
                 int percentage = Math.round( (float) cardCounts[i] * 100 / deckSize);
-                outString += String.format("%1$s: %2$d (%3$d%%)\n", cardType, cardCounts[i], percentage);
+                outString = outString.concat(String.format("%1$s: %2$d (%3$d%%)\n", cardType, cardCounts[i], percentage));
             }
         }
 
