@@ -29,6 +29,7 @@ public class showCardTypeCountsPatch {
         String outString = "";
         int deckSize = 0;
         boolean countCurses = ShowCardTypeCounts.showCardTypeCountsConfig.getBool(ShowCardTypeCounts.ENABLE_CURSES_SETTING);
+        boolean ignoreAscendersBane = ShowCardTypeCounts.showCardTypeCountsConfig.getBool(ShowCardTypeCounts.ENABLE_ASCENDERS_BANE_SETTING);
 
         for (AbstractCard c: AbstractDungeon.player.masterDeck.group) {
             switch (c.type) {
@@ -45,8 +46,7 @@ public class showCardTypeCountsPatch {
                     deckSize++;
                     break;
                 case CURSE:
-                    // TODO: add check for ignoring Ascender's Bane here
-                    if (countCurses) {
+                    if (countCurses && !(c.cardID.equals("AscendersBane") && ignoreAscendersBane)) {
                         cardCounts[3]++;
                         deckSize++;
                     }
