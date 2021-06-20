@@ -25,6 +25,7 @@ public class ShowCardTypeCounts implements PostInitializeSubscriber /*implements
     public static SpireConfig showCardTypeCountsConfig;
     public static final String ENABLE_ON_CARD_REWARDS_SETTING = "enableOnCardRewards";
     public static final String ENABLE_ON_VIEW_DECK_SETTING = "enableOnViewDeck";
+    public static final String ENABLE_ON_SHOP_SETTING = "enableOnShopScreen";
     public static final String ENABLE_CURSES_SETTING = "enableCurses";
     public static final String ENABLE_ASCENDERS_BANE_SETTING = "enableAscendersBane";
     public static final String ENABLE_PERCENTAGES_SETTING = "enablePercentages";
@@ -41,6 +42,7 @@ public class ShowCardTypeCounts implements PostInitializeSubscriber /*implements
         // The actual mod Button is added below in receivePostInitialize()
         showCardTypeCountsSettings.setProperty(ENABLE_ON_CARD_REWARDS_SETTING, "TRUE"); // This is the default setting. It's actually set...
         showCardTypeCountsSettings.setProperty(ENABLE_ON_VIEW_DECK_SETTING, "TRUE"); // This is the default setting. It's actually set...
+        showCardTypeCountsSettings.setProperty(ENABLE_ON_SHOP_SETTING, "FALSE"); // This is the default setting. It's actually set...
         showCardTypeCountsSettings.setProperty(ENABLE_CURSES_SETTING, "TRUE"); // This is the default setting. It's actually set...
         showCardTypeCountsSettings.setProperty(ENABLE_ASCENDERS_BANE_SETTING, "FALSE"); // This is the default setting. It's actually set...
         showCardTypeCountsSettings.setProperty(ENABLE_PERCENTAGES_SETTING, "TRUE"); // This is the default setting. It's actually set...
@@ -106,8 +108,25 @@ public class ShowCardTypeCounts implements PostInitializeSubscriber /*implements
         settingsPanel.addUIElement(enableViewDeckButton); // Add the button to the settings panel. Button is a go.
 
         // Create the on/off button:
-        ModLabeledToggleButton enableCursesButton = new ModLabeledToggleButton("Count Curse and Status cards.",
+        ModLabeledToggleButton enableShopButton = new ModLabeledToggleButton("Show on shop screen.",
                 350.0f, 650.0f, Settings.CREAM_COLOR, FontHelper.charDescFont, // Position (trial and error it), color, font
+                showCardTypeCountsConfig.getBool(ENABLE_ON_SHOP_SETTING), // initial value
+                settingsPanel, // The mod panel in which this button will be in
+                (label) -> {
+                },
+                (button) -> { // The actual button:
+                    try {
+                        showCardTypeCountsConfig.setBool(ENABLE_ON_SHOP_SETTING, button.enabled);
+                        showCardTypeCountsConfig.save();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+        settingsPanel.addUIElement(enableShopButton); // Add the button to the settings panel. Button is a go.
+
+        // Create the on/off button:
+        ModLabeledToggleButton enableCursesButton = new ModLabeledToggleButton("Count Curse and Status cards.",
+                350.0f, 600.0f, Settings.CREAM_COLOR, FontHelper.charDescFont, // Position (trial and error it), color, font
                 showCardTypeCountsConfig.getBool(ENABLE_CURSES_SETTING), // initial value
                 settingsPanel, // The mod panel in which this button will be in
                 (label) -> {
@@ -124,7 +143,7 @@ public class ShowCardTypeCounts implements PostInitializeSubscriber /*implements
 
         // Create the on/off button:
         ModLabeledToggleButton enableAscendersBaneButton = new ModLabeledToggleButton("Ignore Ascender's Bane.",
-                350.0f, 600.0f, Settings.CREAM_COLOR, FontHelper.charDescFont, // Position (trial and error it), color, font
+                350.0f, 550.0f, Settings.CREAM_COLOR, FontHelper.charDescFont, // Position (trial and error it), color, font
                 showCardTypeCountsConfig.getBool(ENABLE_ASCENDERS_BANE_SETTING), // initial value
                 settingsPanel, // The mod panel in which this button will be in
                 (label) -> {
@@ -141,7 +160,7 @@ public class ShowCardTypeCounts implements PostInitializeSubscriber /*implements
 
         // Create the on/off button:
         ModLabeledToggleButton enablePercentagesButton = new ModLabeledToggleButton("Show percentages of card types.",
-                350.0f, 550.0f, Settings.CREAM_COLOR, FontHelper.charDescFont, // Position (trial and error it), color, font
+                350.0f, 500.0f, Settings.CREAM_COLOR, FontHelper.charDescFont, // Position (trial and error it), color, font
                 showCardTypeCountsConfig.getBool(ENABLE_PERCENTAGES_SETTING), // initial value
                 settingsPanel, // The mod panel in which this button will be in
                 (label) -> {

@@ -12,6 +12,7 @@ import com.megacrit.cardcrawl.localization.TutorialStrings;
 import com.megacrit.cardcrawl.localization.UIStrings;
 import com.megacrit.cardcrawl.screens.CardRewardScreen;
 import com.megacrit.cardcrawl.screens.MasterDeckViewScreen;
+import com.megacrit.cardcrawl.shop.ShopScreen;
 import javassist.CtBehavior;
 import showCardTypeCounts.ShowCardTypeCounts;
 
@@ -113,6 +114,19 @@ public class showCardTypeCountsPatch {
         @SpirePostfixPatch
         public static void Postfix(SpriteBatch sb) {
             if (ShowCardTypeCounts.showCardTypeCountsConfig.getBool(ShowCardTypeCounts.ENABLE_ON_CARD_REWARDS_SETTING)) {
+                countCardTypes(sb);
+            }
+        }
+    }
+
+    @SpirePatch2(
+            clz = ShopScreen.class,
+            method = "render"
+    )
+    public static class shopScreenPatch {
+        @SpirePostfixPatch
+        public static void Postfix(SpriteBatch sb) {
+            if (ShowCardTypeCounts.showCardTypeCountsConfig.getBool(ShowCardTypeCounts.ENABLE_ON_SHOP_SETTING)) {
                 countCardTypes(sb);
             }
         }
