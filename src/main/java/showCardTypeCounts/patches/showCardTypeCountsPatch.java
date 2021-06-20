@@ -32,6 +32,7 @@ public class showCardTypeCountsPatch {
         boolean countCurses = ShowCardTypeCounts.showCardTypeCountsConfig.getBool(ShowCardTypeCounts.ENABLE_CURSES_SETTING);
         boolean ignoreAscendersBane = ShowCardTypeCounts.showCardTypeCountsConfig.getBool(ShowCardTypeCounts.ENABLE_ASCENDERS_BANE_SETTING);
         boolean showPercentages = ShowCardTypeCounts.showCardTypeCountsConfig.getBool(ShowCardTypeCounts.ENABLE_PERCENTAGES_SETTING);
+        boolean capitaliseDeck = ShowCardTypeCounts.showCardTypeCountsConfig.getBool(ShowCardTypeCounts.ENABLE_CAPITALISE_DECK_SETTING);
 
         for (AbstractCard c: AbstractDungeon.player.masterDeck.group) {
             switch (c.type) {
@@ -76,8 +77,8 @@ public class showCardTypeCountsPatch {
         }
 
         if (outString.length() > 0) {
-            String deckName = tutorialStrings.LABEL[1]+"\n";
-            outString = deckName+outString;
+            String deckName = capitaliseDeck ? tutorialStrings.LABEL[1].toUpperCase().concat("\n") : tutorialStrings.LABEL[1].concat("\n");
+            outString = deckName.concat(outString);
         }
         FontHelper.renderFontLeft(sb, FontHelper.panelNameFont, outString, 16f * Settings.scale, Settings.HEIGHT / 2.0F, Color.WHITE.cpy());
     }
