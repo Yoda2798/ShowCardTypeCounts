@@ -24,7 +24,7 @@ public class ShowCardTypeCounts implements PostInitializeSubscriber /*implements
     public static Properties showCardTypeCountsSettings = new Properties();
     public static SpireConfig showCardTypeCountsConfig;
     public static final String ENABLE_ON_CARD_REWARDS_SETTING = "enableOnCardRewards";
-    //public static final String ENABLE_ON_VIEW_DECK_SETTING = "enableOnViewDeck";
+    public static final String ENABLE_ON_VIEW_DECK_SETTING = "enableOnViewDeck";
     public static final String ENABLE_CURSES_SETTING = "enableCurses";
 
     public static final String BADGE_IMAGE = "showcardtypecountsResources/images/Badge.png";
@@ -38,7 +38,7 @@ public class ShowCardTypeCounts implements PostInitializeSubscriber /*implements
         // This loads the mod settings.
         // The actual mod Button is added below in receivePostInitialize()
         showCardTypeCountsSettings.setProperty(ENABLE_ON_CARD_REWARDS_SETTING, "TRUE"); // This is the default setting. It's actually set...
-        //showCardTypeCountsSettings.setProperty(ENABLE_ON_VIEW_DECK_SETTING, "TRUE"); // This is the default setting. It's actually set...
+        showCardTypeCountsSettings.setProperty(ENABLE_ON_VIEW_DECK_SETTING, "TRUE"); // This is the default setting. It's actually set...
         showCardTypeCountsSettings.setProperty(ENABLE_CURSES_SETTING, "TRUE"); // This is the default setting. It's actually set...
         try {
             showCardTypeCountsConfig = new SpireConfig("showCardTypeCounts", "showCardTypeCountsConfig", showCardTypeCountsSettings); // ...right here
@@ -68,7 +68,7 @@ public class ShowCardTypeCounts implements PostInitializeSubscriber /*implements
         ModPanel settingsPanel = new ModPanel();
 
         // Create the on/off button:
-        ModLabeledToggleButton enableNormalsButton = new ModLabeledToggleButton("Show on card reward screen.",
+        ModLabeledToggleButton enableCardRewardButton = new ModLabeledToggleButton("Show on card reward screen.",
                 350.0f, 750.0f, Settings.CREAM_COLOR, FontHelper.charDescFont, // Position (trial and error it), color, font
                 showCardTypeCountsConfig.getBool(ENABLE_ON_CARD_REWARDS_SETTING), // initial value
                 settingsPanel, // The mod panel in which this button will be in
@@ -83,11 +83,29 @@ public class ShowCardTypeCounts implements PostInitializeSubscriber /*implements
                     }
                 });
 
-        settingsPanel.addUIElement(enableNormalsButton); // Add the button to the settings panel. Button is a go.
+        settingsPanel.addUIElement(enableCardRewardButton); // Add the button to the settings panel. Button is a go.
+
+        // Create the on/off button:
+        ModLabeledToggleButton enableViewDeckButton = new ModLabeledToggleButton("Show on view deck screen.",
+                350.0f, 700.0f, Settings.CREAM_COLOR, FontHelper.charDescFont, // Position (trial and error it), color, font
+                showCardTypeCountsConfig.getBool(ENABLE_ON_VIEW_DECK_SETTING), // initial value
+                settingsPanel, // The mod panel in which this button will be in
+                (label) -> {
+                },
+                (button) -> { // The actual button:
+                    try {
+                        showCardTypeCountsConfig.setBool(ENABLE_ON_VIEW_DECK_SETTING, button.enabled);
+                        showCardTypeCountsConfig.save();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+
+        settingsPanel.addUIElement(enableViewDeckButton); // Add the button to the settings panel. Button is a go.
 
         // Create the on/off button:
         ModLabeledToggleButton enableCursesButton = new ModLabeledToggleButton("Count Curse and Status cards.",
-                350.0f, 700.0f, Settings.CREAM_COLOR, FontHelper.charDescFont, // Position (trial and error it), color, font
+                350.0f, 650.0f, Settings.CREAM_COLOR, FontHelper.charDescFont, // Position (trial and error it), color, font
                 showCardTypeCountsConfig.getBool(ENABLE_CURSES_SETTING), // initial value
                 settingsPanel, // The mod panel in which this button will be in
                 (label) -> {

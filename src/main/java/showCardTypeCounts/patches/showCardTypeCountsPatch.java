@@ -8,8 +8,10 @@ import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.FontHelper;
+import com.megacrit.cardcrawl.localization.TutorialStrings;
 import com.megacrit.cardcrawl.localization.UIStrings;
 import com.megacrit.cardcrawl.screens.CardRewardScreen;
+import com.megacrit.cardcrawl.screens.MasterDeckViewScreen;
 import javassist.CtBehavior;
 import showCardTypeCounts.ShowCardTypeCounts;
 
@@ -20,13 +22,9 @@ import showCardTypeCounts.ShowCardTypeCounts;
 public class showCardTypeCountsPatch {
 
     private static final UIStrings uiStrings = CardCrawlGame.languagePack.getUIString("SingleCardViewPopup");
-    private static final String deckName = CardCrawlGame.languagePack.getTutorialString("Top Panel Tips").LABEL[1];
+    private static final TutorialStrings tutorialStrings = CardCrawlGame.languagePack.getTutorialString("Top Panel Tips");
 
-    @SpireInsertPatch(
-            locator = Locator.class,
-            localvars = {"sb"}
-    )
-    public static void Insert(SpriteBatch sb) {
+    public static void countCardTypes(SpriteBatch sb) {
         int[] cardCounts = new int[5];
         String outString = "";
         //int totalCards = 0;
@@ -71,18 +69,47 @@ public class showCardTypeCountsPatch {
             }
         }
 
-        if (outString.length() > 0 && ShowCardTypeCounts.showCardTypeCountsConfig.getBool(ShowCardTypeCounts.ENABLE_ON_CARD_REWARDS_SETTING)) {
-            FontHelper.renderFontLeft(sb, FontHelper.panelNameFont, deckName+"\n"+outString, 0f, Settings.HEIGHT / 2.0F, Color.WHITE.cpy());
+        if (outString.length() > 0) {
+            String deckName = tutorialStrings.LABEL[1]+"\n";
+            outString = deckName+outString;
+        }
+        FontHelper.renderFontLeft(sb, FontHelper.panelNameFont, outString, 0f, Settings.HEIGHT / 2.0F, Color.WHITE.cpy());
+    }
+
+    @SpirePatch2(
+            clz = CardRewardScreen.class,
+            method = "render"
+    )
+    public static class cardRewardScreenPatch {
+        @SpireInsertPatch(
+                locator = Locator.class,
+                localvars = {"sb"}
+        )
+        public static void Insert(SpriteBatch sb) {
+            if (ShowCardTypeCounts.showCardTypeCountsConfig.getBool(ShowCardTypeCounts.ENABLE_ON_CARD_REWARDS_SETTING)) {
+                countCardTypes(sb);
+            }
+        }
+
+        private static class Locator extends SpireInsertLocator {
+            @Override
+            public int[] Locate(CtBehavior ctMethodToPatch) throws Exception {
+                Matcher finalMatcher = new Matcher.MethodCallMatcher(CardRewardScreen.class,"renderTwitchVotes");
+                return LineFinder.findInOrder(ctMethodToPatch, finalMatcher);
+            }
         }
     }
 
-    private static class Locator extends SpireInsertLocator {
-        @Override
-        public int[] Locate(CtBehavior ctMethodToPatch) throws Exception {
-
-            Matcher finalMatcher = new Matcher.MethodCallMatcher(CardRewardScreen.class,"renderTwitchVotes");
-
-            return LineFinder.findInOrder(ctMethodToPatch, finalMatcher);
+    @SpirePatch2(
+            clz = MasterDeckViewScreen.class,
+            method = "render"
+    )
+    public static class deckViewScreenPatch {
+        @SpirePostfixPatch
+        public static void Postfix(SpriteBatch sb) {
+            if (ShowCardTypeCounts.showCardTypeCountsConfig.getBool(ShowCardTypeCounts.ENABLE_ON_CARD_REWARDS_SETTING)) {
+                countCardTypes(sb);
+            }
         }
     }
 }
