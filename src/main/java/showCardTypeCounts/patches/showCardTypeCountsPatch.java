@@ -2,6 +2,7 @@ package showCardTypeCounts.patches;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.evacipated.cardcrawl.modthespire.Loader;
 import com.evacipated.cardcrawl.modthespire.lib.*;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
@@ -14,6 +15,7 @@ import com.megacrit.cardcrawl.screens.CardRewardScreen;
 import com.megacrit.cardcrawl.screens.MasterDeckViewScreen;
 import com.megacrit.cardcrawl.shop.ShopScreen;
 import javassist.CtBehavior;
+import lobotomyMod.patch.AbstractCardEnum;
 import showCardTypeCounts.ShowCardTypeCounts;
 
 @SpirePatch2(
@@ -25,18 +27,28 @@ public class showCardTypeCountsPatch {
     private static final UIStrings uiStrings = CardCrawlGame.languagePack.getUIString("SingleCardViewPopup");
     private static final TutorialStrings tutorialStrings = CardCrawlGame.languagePack.getTutorialString("Top Panel Tips");
 
+    private static final boolean hasLobotomy = Loader.isModLoaded("Lobotomy");
+
     public static void countCardTypes(SpriteBatch sb) {
-        int[] cardCounts = new int[5];
+        // 0 attack, 1 skill, 2 power, 3 curse, 4 status, 5 poker, 6 abnormality (lobotomy), 7 passive (slumbering), 8 other
+        int[] cardCounts = new int[9];
         String outString = "";
         int deckSize = 0;
+
         boolean countCurses = ShowCardTypeCounts.showCardTypeCountsConfig.getBool(ShowCardTypeCounts.ENABLE_CURSES_SETTING);
         boolean countAscendersBane = ShowCardTypeCounts.showCardTypeCountsConfig.getBool(ShowCardTypeCounts.ENABLE_ASCENDERS_BANE_SETTING);
         boolean showPercentages = ShowCardTypeCounts.showCardTypeCountsConfig.getBool(ShowCardTypeCounts.ENABLE_PERCENTAGES_SETTING);
         boolean capitaliseDeck = ShowCardTypeCounts.showCardTypeCountsConfig.getBool(ShowCardTypeCounts.ENABLE_CAPITALISE_DECK_SETTING);
         boolean showOnRight = ShowCardTypeCounts.showCardTypeCountsConfig.getBool(ShowCardTypeCounts.ENABLE_SHOW_ON_RIGHT_SETTING);
 
+
         // count cards of each type in deck
         for (AbstractCard c: AbstractDungeon.player.masterDeck.group) {
+            if (hasLobotomy && c.color == AbstractCardEnum.Lobotomy) {
+                cardCounts[6]++;
+                deckSize++;
+                continue;
+            }
             switch (c.type) {
                 case ATTACK:
                     cardCounts[0]++;
@@ -63,7 +75,9 @@ public class showCardTypeCountsPatch {
                     }
                     break;
                 default:
-                    // ignore card if somehow not one of above
+                    //System.out.println(c.type.name());
+                    cardCounts[8]++;
+                    deckSize++;
                     break;
             }
         }
@@ -71,7 +85,35 @@ public class showCardTypeCountsPatch {
         // format output for each card type
         for (int i = 0; i < cardCounts.length; i++) {
             if (cardCounts[i] > 0) {
-                String cardType = i == 4 ? uiStrings.TEXT[7] : uiStrings.TEXT[i]; // Status is in different spot
+                String cardType;
+                switch (i) {
+                    // attack, skill, power, curse, status
+                    case 0:
+                    case 1:
+                    case 2:
+                    case 3:
+                    case 4:
+                        if (i == 4) {i = 7;} // status in different spot
+                        cardType = uiStrings.TEXT[i];
+                        break;
+                    // poker
+                    case 5:
+                        cardType = "Poker";
+                        break;
+                    // abnormality (lobotomy)
+                    case 6:
+                        cardType = CardCrawlGame.languagePack.getUIString("CardType").TEXT[0]; //"Abnormality";
+                        break;
+                    // passive (slumbering)
+                    case 7:
+                        cardType = "Passive";
+                        break;
+                    // other
+                    case 8:
+                    default:
+                        cardType = "Other";
+                        break;
+                }
                 int percentageNum = Math.round( (float) cardCounts[i] * 100 / deckSize);
                 String percentage = showPercentages ? String.format(" (%d%%)", percentageNum) : "";
                 outString = outString.concat(String.format("%1$s: %2$d%3$s\n", cardType, cardCounts[i], percentage));

@@ -11,6 +11,9 @@
   "dependencies": [
     "basemod",
     "stslib"
+  ],
+  "optional_dependencies": [
+    "Lobotomy"
   ]
 }
 
