@@ -42,6 +42,7 @@ public class showCardTypeCountsPatch {
 
         boolean countCurses = ShowCardTypeCounts.showCardTypeCountsConfig.getBool(ShowCardTypeCounts.ENABLE_CURSES_SETTING);
         boolean countAscendersBane = ShowCardTypeCounts.showCardTypeCountsConfig.getBool(ShowCardTypeCounts.ENABLE_ASCENDERS_BANE_SETTING);
+        boolean countModdedTypes = ShowCardTypeCounts.showCardTypeCountsConfig.getBool(ShowCardTypeCounts.ENABLE_MODDED_TYPES_SETTING);
         boolean showPercentages = ShowCardTypeCounts.showCardTypeCountsConfig.getBool(ShowCardTypeCounts.ENABLE_PERCENTAGES_SETTING);
         boolean capitaliseDeck = ShowCardTypeCounts.showCardTypeCountsConfig.getBool(ShowCardTypeCounts.ENABLE_CAPITALISE_DECK_SETTING);
         boolean showOnRight = ShowCardTypeCounts.showCardTypeCountsConfig.getBool(ShowCardTypeCounts.ENABLE_SHOW_ON_RIGHT_SETTING);
@@ -51,12 +52,16 @@ public class showCardTypeCountsPatch {
         for (AbstractCard c: AbstractDungeon.player.masterDeck.group) {
             // handle modded types which don't actually change type first
             if (hasLobotomy && c.color == AbstractCardEnum.Lobotomy) {
-                cardCounts[6]++;
-                deckSize++;
+                if (countModdedTypes) {
+                    cardCounts[6]++;
+                    deckSize++;
+                }
                 continue;
             } else if (hasSlumbering && c.hasTag(customTags.Passive)) {
-                cardCounts[7]++;
-                deckSize++;
+                if (countModdedTypes) {
+                    cardCounts[7]++;
+                    deckSize++;
+                }
                 continue;
             }
             switch (c.type) {
@@ -85,9 +90,10 @@ public class showCardTypeCountsPatch {
                     }
                     break;
                 default:
-                    //System.out.println(c.type.name());
-                    cardCounts[8]++;
-                    deckSize++;
+                    if (countModdedTypes) {
+                        cardCounts[8]++;
+                        deckSize++;
+                    }
                     break;
             }
         }
@@ -97,14 +103,16 @@ public class showCardTypeCountsPatch {
             if (cardCounts[i] > 0) {
                 String cardType;
                 switch (i) {
-                    // attack, skill, power, curse, status
+                    // attack, skill, power, curse
                     case 0:
                     case 1:
                     case 2:
                     case 3:
-                    case 4:
-                        if (i == 4) {i = 7;} // status in different spot
                         cardType = uiStrings.TEXT[i];
+                        break;
+                    // status (in later spot not corresponding to i)
+                    case 4:
+                        cardType = uiStrings.TEXT[7];
                         break;
                     // poker
                     case 5:

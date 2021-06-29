@@ -26,6 +26,7 @@ public class ShowCardTypeCounts implements PostInitializeSubscriber {
     public static final String ENABLE_ON_SHOP_SETTING = "enableOnShopScreen";
     public static final String ENABLE_CURSES_SETTING = "enableCurses";
     public static final String ENABLE_ASCENDERS_BANE_SETTING = "enableAscendersBane";
+    public static final String ENABLE_MODDED_TYPES_SETTING = "enableModdedTypes";
     public static final String ENABLE_PERCENTAGES_SETTING = "enablePercentages";
     public static final String ENABLE_CAPITALISE_DECK_SETTING = "enableCapitaliseDeck";
     public static final String ENABLE_SHOW_ON_RIGHT_SETTING = "enableShowOnRight";
@@ -44,6 +45,7 @@ public class ShowCardTypeCounts implements PostInitializeSubscriber {
         defaultSettings.setProperty(ENABLE_ON_SHOP_SETTING, "TRUE");
         defaultSettings.setProperty(ENABLE_CURSES_SETTING, "TRUE");
         defaultSettings.setProperty(ENABLE_ASCENDERS_BANE_SETTING, "FALSE");
+        defaultSettings.setProperty(ENABLE_MODDED_TYPES_SETTING, "TRUE");
         defaultSettings.setProperty(ENABLE_PERCENTAGES_SETTING, "TRUE");
         defaultSettings.setProperty(ENABLE_CAPITALISE_DECK_SETTING, "TRUE");
         defaultSettings.setProperty(ENABLE_SHOW_ON_RIGHT_SETTING, "FALSE");
@@ -92,6 +94,7 @@ public class ShowCardTypeCounts implements PostInitializeSubscriber {
         makeToggleButton(settingsPanel, ENABLE_ON_SHOP_SETTING, "Show on shop screen.");
         makeToggleButton(settingsPanel, ENABLE_CURSES_SETTING, "Count Curse and Status cards.");
         makeToggleButton(settingsPanel, ENABLE_ASCENDERS_BANE_SETTING, "Count Ascender's Bane.");
+        makeToggleButton(settingsPanel, ENABLE_MODDED_TYPES_SETTING, "Count modded card types.");
         makeToggleButton(settingsPanel, ENABLE_PERCENTAGES_SETTING, "Show percentages of card types.");
         makeToggleButton(settingsPanel, ENABLE_CAPITALISE_DECK_SETTING, "Show 'DECK' in all capitals.");
         makeToggleButton(settingsPanel, ENABLE_SHOW_ON_RIGHT_SETTING, "Show information on right-hand side of screen.");

@@ -4,7 +4,7 @@
     <groupId>UnimportantInfo</groupId>
 
     <artifactId>ShowCardTypeCounts</artifactId>
-    <version>1.1.1</version>
+    <version>1.1.2</version>
     <name>Show Card Type Counts</name>
     <description>Displays numbers and percentages for different card types in deck.</description>
     <!-- Change the above for mod information. -->

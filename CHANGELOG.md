@@ -1,5 +1,8 @@
 ## Changelog ##
 
+#### v1.1.2 ####
+* Added option for displaying modded card types or not
+
 #### v1.1.1 ####
 * Added support for Passive cards (The Slumbering)
 
