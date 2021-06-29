@@ -17,6 +17,7 @@ import com.megacrit.cardcrawl.shop.ShopScreen;
 import javassist.CtBehavior;
 import lobotomyMod.patch.AbstractCardEnum;
 import showCardTypeCounts.ShowCardTypeCounts;
+import theSlumbering.patches.customTags;
 
 @SpirePatch2(
         clz = CardRewardScreen.class,
@@ -27,7 +28,11 @@ public class showCardTypeCountsPatch {
     private static final UIStrings uiStrings = CardCrawlGame.languagePack.getUIString("SingleCardViewPopup");
     private static final TutorialStrings tutorialStrings = CardCrawlGame.languagePack.getTutorialString("Top Panel Tips");
 
+    private static final UIStrings lobotomyStrings = CardCrawlGame.languagePack.getUIString("CardType");
+    private static final UIStrings slumberingStrings = CardCrawlGame.languagePack.getUIString("theSlumbering:RenderType");
+
     private static final boolean hasLobotomy = Loader.isModLoaded("Lobotomy");
+    private static final boolean hasSlumbering = Loader.isModLoaded("slumberingmod");
 
     public static void countCardTypes(SpriteBatch sb) {
         // 0 attack, 1 skill, 2 power, 3 curse, 4 status, 5 poker, 6 abnormality (lobotomy), 7 passive (slumbering), 8 other
@@ -44,8 +49,13 @@ public class showCardTypeCountsPatch {
 
         // count cards of each type in deck
         for (AbstractCard c: AbstractDungeon.player.masterDeck.group) {
+            // handle modded types which don't actually change type first
             if (hasLobotomy && c.color == AbstractCardEnum.Lobotomy) {
                 cardCounts[6]++;
+                deckSize++;
+                continue;
+            } else if (hasSlumbering && c.hasTag(customTags.Passive)) {
+                cardCounts[7]++;
                 deckSize++;
                 continue;
             }
@@ -102,11 +112,11 @@ public class showCardTypeCountsPatch {
                         break;
                     // abnormality (lobotomy)
                     case 6:
-                        cardType = CardCrawlGame.languagePack.getUIString("CardType").TEXT[0]; //"Abnormality";
+                        cardType = lobotomyStrings.TEXT[0];
                         break;
                     // passive (slumbering)
                     case 7:
-                        cardType = "Passive";
+                        cardType = slumberingStrings.TEXT[0];
                         break;
                     // other
                     case 8:

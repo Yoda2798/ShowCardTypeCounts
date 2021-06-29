@@ -13,7 +13,8 @@
     "stslib"
   ],
   "optional_dependencies": [
-    "Lobotomy"
+    "Lobotomy",
+    "slumberingmod"
   ]
 }
 

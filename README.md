@@ -12,6 +12,7 @@ Install the requirements linked below, then go to the Steam release for this mod
 ## Compatibility
 Any modded cards of basegame card types (Attack, Skill, Power, Curse, Status) will be recognised and counted respectively. For modded card types, the following mods are currently supported and will be recognised, other mods' cards may be recognised as a basegame type or be grouped under the type "Other". Mods listed below will use localised strings.
 * [Lobotomy](https://steamcommunity.com/sharedfiles/filedetails/?id=1969477416&searchtext=lobotomy) - Abnormality
+* [The Slumbering](https://steamcommunity.com/sharedfiles/filedetails/?id=1968575672&searchtext=slumbering) - Passive
 
 ## Contact Me
 You can contact me in the [official Slay the Spire Discord](https://discord.com/invite/SlayTheSpire) at Yoda2798#7370 or comment on the Steam workshop page with suggestions or mods to add support for.
