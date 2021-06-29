@@ -1,5 +1,6 @@
 package showCardTypeCounts.patches;
 
+import ThePokerPlayer.patches.CardTypeEnum;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.evacipated.cardcrawl.modthespire.Loader;
@@ -19,6 +20,7 @@ import lobotomyMod.patch.AbstractCardEnum;
 import showCardTypeCounts.ShowCardTypeCounts;
 import theSlumbering.patches.customTags;
 
+
 @SpirePatch2(
         clz = CardRewardScreen.class,
         method = "render"
@@ -29,13 +31,15 @@ public class showCardTypeCountsPatch {
     private static final TutorialStrings tutorialStrings = CardCrawlGame.languagePack.getTutorialString("Top Panel Tips");
 
     private static final UIStrings lobotomyStrings = CardCrawlGame.languagePack.getUIString("CardType");
+    private static final UIStrings pokerPlayerStrings = CardCrawlGame.languagePack.getUIString("PokerPlayerMod:PokerCardType");
     private static final UIStrings slumberingStrings = CardCrawlGame.languagePack.getUIString("theSlumbering:RenderType");
 
     private static final boolean hasLobotomy = Loader.isModLoaded("Lobotomy");
+    private static final boolean hasPokerPlayer = Loader.isModLoaded("PokerPlayerMod");
     private static final boolean hasSlumbering = Loader.isModLoaded("slumberingmod");
 
     public static void countCardTypes(SpriteBatch sb) {
-        // 0 attack, 1 skill, 2 power, 3 curse, 4 status, 5 poker, 6 abnormality (lobotomy), 7 passive (slumbering), 8 other
+        // 0 attack, 1 skill, 2 power, 3 curse, 4 status, 5 poker (poker player), 6 abnormality (lobotomy), 7 passive (slumbering), 8 other
         int[] cardCounts = new int[9];
         String outString = "";
         int deckSize = 0;
@@ -50,8 +54,14 @@ public class showCardTypeCountsPatch {
 
         // count cards of each type in deck
         for (AbstractCard c: AbstractDungeon.player.masterDeck.group) {
-            // handle modded types which don't actually change type first
-            if (hasLobotomy && c.color == AbstractCardEnum.Lobotomy) {
+            // handle modded types first
+            if (hasPokerPlayer && c.type == CardTypeEnum.POKER) {
+                if (countModdedTypes) {
+                    cardCounts[5]++;
+                    deckSize++;
+                }
+                continue;
+            } else if (hasLobotomy && c.color == AbstractCardEnum.Lobotomy) {
                 if (countModdedTypes) {
                     cardCounts[6]++;
                     deckSize++;
@@ -114,9 +124,9 @@ public class showCardTypeCountsPatch {
                     case 4:
                         cardType = uiStrings.TEXT[7];
                         break;
-                    // poker
+                    // poker (poker player)
                     case 5:
-                        cardType = "Poker";
+                        cardType = pokerPlayerStrings.TEXT[0];
                         break;
                     // abnormality (lobotomy)
                     case 6:

@@ -1,5 +1,8 @@
 ## Changelog ##
 
+#### v1.1.3 ####
+* Added support for Poker cards (The Poker Player)
+
 #### v1.1.2 ####
 * Added option for displaying modded card types or not
 
