@@ -24,6 +24,7 @@ public class ShowCardTypeCounts implements PostInitializeSubscriber {
     public static final String ENABLE_ON_CARD_REWARDS_SETTING = "enableOnCardRewards";
     public static final String ENABLE_ON_VIEW_DECK_SETTING = "enableOnViewDeck";
     public static final String ENABLE_ON_SHOP_SETTING = "enableOnShopScreen";
+    public static final String ENABLE_ON_REMOVE_SETTING = "enableOnRemoveScreen";
     public static final String ENABLE_CURSES_SETTING = "enableCurses";
     public static final String ENABLE_ASCENDERS_BANE_SETTING = "enableAscendersBane";
     public static final String ENABLE_MODDED_TYPES_SETTING = "enableModdedTypes";
@@ -43,6 +44,7 @@ public class ShowCardTypeCounts implements PostInitializeSubscriber {
         defaultSettings.setProperty(ENABLE_ON_CARD_REWARDS_SETTING, "TRUE");
         defaultSettings.setProperty(ENABLE_ON_VIEW_DECK_SETTING, "TRUE");
         defaultSettings.setProperty(ENABLE_ON_SHOP_SETTING, "TRUE");
+        defaultSettings.setProperty(ENABLE_ON_REMOVE_SETTING, "TRUE");
         defaultSettings.setProperty(ENABLE_CURSES_SETTING, "TRUE");
         defaultSettings.setProperty(ENABLE_ASCENDERS_BANE_SETTING, "FALSE");
         defaultSettings.setProperty(ENABLE_MODDED_TYPES_SETTING, "TRUE");
@@ -92,6 +94,7 @@ public class ShowCardTypeCounts implements PostInitializeSubscriber {
         makeToggleButton(settingsPanel, ENABLE_ON_CARD_REWARDS_SETTING, "Show on card reward screen.");
         makeToggleButton(settingsPanel, ENABLE_ON_VIEW_DECK_SETTING, "Show on view deck screen.");
         makeToggleButton(settingsPanel, ENABLE_ON_SHOP_SETTING, "Show on shop screen.");
+        makeToggleButton(settingsPanel, ENABLE_ON_REMOVE_SETTING, "Show on remove/upgrade/transform/duplicate screens.");
         makeToggleButton(settingsPanel, ENABLE_CURSES_SETTING, "Count Curse and Status cards.");
         makeToggleButton(settingsPanel, ENABLE_ASCENDERS_BANE_SETTING, "Count Ascender's Bane.");
         makeToggleButton(settingsPanel, ENABLE_MODDED_TYPES_SETTING, "Count modded card types.");

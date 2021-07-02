@@ -1,6 +1,7 @@
 package showCardTypeCounts.patches;
 
 import ThePokerPlayer.patches.CardTypeEnum;
+import basemod.ReflectionHacks;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.evacipated.cardcrawl.modthespire.Loader;
@@ -14,7 +15,9 @@ import com.megacrit.cardcrawl.localization.TutorialStrings;
 import com.megacrit.cardcrawl.localization.UIStrings;
 import com.megacrit.cardcrawl.screens.CardRewardScreen;
 import com.megacrit.cardcrawl.screens.MasterDeckViewScreen;
+import com.megacrit.cardcrawl.screens.select.GridCardSelectScreen;
 import com.megacrit.cardcrawl.shop.ShopScreen;
+import com.megacrit.cardcrawl.ui.buttons.PeekButton;
 import javassist.CtBehavior;
 import lobotomyMod.patch.AbstractCardEnum;
 import showCardTypeCounts.ShowCardTypeCounts;
@@ -207,6 +210,21 @@ public class showCardTypeCountsPatch {
         @SpirePostfixPatch
         public static void Postfix(SpriteBatch sb) {
             if (ShowCardTypeCounts.showCardTypeCountsConfig.getBool(ShowCardTypeCounts.ENABLE_ON_SHOP_SETTING)) {
+                countCardTypes(sb);
+            }
+        }
+    }
+
+    @SpirePatch2(
+            clz = GridCardSelectScreen.class,
+            method = "render"
+    )
+    public static class GridCardSelectScreenPatch {
+        @SpirePostfixPatch
+        public static void Postfix(GridCardSelectScreen __instance, SpriteBatch sb) {
+            // this is where I would check __instance.forTransform if it was actually used... (along with forUpgrade and forPurge)
+            // this displays if the peek button is hidden, which effectively means out of combat, so catches everything with like Cursed Bell as the only false positive
+            if (ShowCardTypeCounts.showCardTypeCountsConfig.getBool(ShowCardTypeCounts.ENABLE_ON_REMOVE_SETTING) && (boolean)ReflectionHacks.getPrivate(__instance.peekButton, PeekButton.class, "isHidden")) {
                 countCardTypes(sb);
             }
         }

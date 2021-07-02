@@ -1,5 +1,8 @@
 ## Changelog ##
 
+#### v1.1.4 ####
+* Added option to show on remove/upgrade/transform/duplicate screens
+
 #### v1.1.3 ####
 * Added support for Poker cards (The Poker Player)
 
